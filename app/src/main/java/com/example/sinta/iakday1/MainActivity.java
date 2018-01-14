@@ -1,6 +1,5 @@
 package com.example.sinta.iakday1;
 
-import android.support.v4.widget.TextViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView tvWeather;
     private TextView tvTemperature;
     private RecyclerView mainWeatherList;
+    private WeatherAdapter weatherAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
         ivWeather.setImageResource(R.mipmap.ic_launcher_round);
         tvWeather.setText("Cuaca Berawan");
         tvTemperature.setText("100" + getString(R.string.degree));
+
+        weatherAdapter = new WeatherAdapter();
+        mainWeatherList.setAdapter(weatherAdapter);
 
     }
 
