@@ -1,4 +1,4 @@
-package com.example.sinta.iakday1;
+package com.example.sinta.iakday1.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,14 +10,25 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+import com.example.sinta.iakday1.R;
+import com.example.sinta.iakday1.adapter.WeatherAdapter;
 
-    private TextView tvDaya;
-    private ImageView ivWeather;
-    private TextView tvWeather;
-    private TextView tvTemperature;
-    private RecyclerView mainWeatherList;
-    private WeatherAdapter weatherAdapter;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+public class MainActivity extends AppCompatActivity {
+    @BindView(R.id.tv_day)
+    TextView tvDaya;
+    @BindView(R.id.iv_weather)
+    ImageView ivWeather;
+    @BindView(R.id.tv_weather)
+    TextView tvWeather;
+    @BindView(R.id.tv_temperature)
+    TextView tvTemperature;
+    @BindView(R.id.rv_weather)
+    RecyclerView mainWeatherList;
+
+    WeatherAdapter weatherAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,12 +40,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void initView(){
 
-        tvDaya = (TextView)findViewById(R.id.tv_day);
+        ButterKnife.bind(this);
+/*tvDaya = (TextView)findViewById(R.id.tv_day);
         ivWeather = (ImageView)findViewById(R.id.iv_weather);
         tvWeather = (TextView)findViewById(R.id.tv_weather);
         tvTemperature = (TextView)findViewById(R.id.tv_temperature);
+        mainWeatherList = (RecyclerView) findViewById(R.id.rv_weather);*/
 
-        mainWeatherList = (RecyclerView) findViewById(R.id.rv_weather);
 
         mainWeatherList.setLayoutManager(new LinearLayoutManager(this));
         mainWeatherList.setHasFixedSize(true);
