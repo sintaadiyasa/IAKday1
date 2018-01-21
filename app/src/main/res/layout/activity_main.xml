@@ -58,8 +58,8 @@
                 android:id="@+id/tv_temperature"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="17\u00b0"
-                android:textSize="42sp"
+                android:text="17\u00b0C"
+                android:textSize="32sp"
                 android:textColor="@android:color/white"/>
 
         </LinearLayout>

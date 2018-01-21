@@ -23,8 +23,9 @@ public class WeatherViewHolder extends RecyclerView.ViewHolder implements View.O
     TextView weatherDesc;
     @BindView(R.id.weather_item_temp)
     TextView weatherTemp;
+
     private final WeatherCallback callback;
-    private static final int weatherLayout = R.layout.view_holder_weather;
+    private static final int Layout = R.layout.view_holder_weather;
 
     public WeatherViewHolder(View itemView, WeatherCallback callback) {
         super(itemView);
@@ -64,6 +65,6 @@ public class WeatherViewHolder extends RecyclerView.ViewHolder implements View.O
     }
 
     public static int getWeatherLayout() {
-        return weatherLayout;
+        return Layout;
     }
 }

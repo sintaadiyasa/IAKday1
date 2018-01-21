@@ -10,15 +10,28 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.example.sinta.iakday1.App;
 import com.example.sinta.iakday1.R;
+import com.example.sinta.iakday1.WeatherController;
+import com.example.sinta.iakday1.WeatherEvent;
 import com.example.sinta.iakday1.adapter.WeatherAdapter;
+import com.example.sinta.iakday1.model.Forecast;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
     @BindView(R.id.tv_day)
-    TextView tvDaya;
+    TextView tvDay;
     @BindView(R.id.iv_weather)
     ImageView ivWeather;
     @BindView(R.id.tv_weather)
@@ -28,37 +41,63 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.rv_weather)
     RecyclerView mainWeatherList;
 
-    WeatherAdapter weatherAdapter;
+    private WeatherAdapter weatherAdapter;
+
+    private EventBus eventBus = App.getInstance().getEventBus();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        eventBus.register(this);
 
         initView();
+
+        WeatherController controller = new WeatherController();
+        controller.getWeatherList();
+    }
+
+    @Override
+    protected void onDestroy() {
+        eventBus.unregister(this);
+        super.onDestroy();
     }
 
     private void initView(){
 
         ButterKnife.bind(this);
-/*tvDaya = (TextView)findViewById(R.id.tv_day);
-        ivWeather = (ImageView)findViewById(R.id.iv_weather);
-        tvWeather = (TextView)findViewById(R.id.tv_weather);
-        tvTemperature = (TextView)findViewById(R.id.tv_temperature);
-        mainWeatherList = (RecyclerView) findViewById(R.id.rv_weather);*/
-
 
         mainWeatherList.setLayoutManager(new LinearLayoutManager(this));
         mainWeatherList.setHasFixedSize(true);
 
-        tvDaya.setText("Minggu");
-        ivWeather.setImageResource(R.mipmap.ic_launcher_round);
-        tvWeather.setText("Cuaca Berawan");
-        tvTemperature.setText("100" + getString(R.string.degree));
-
         weatherAdapter = new WeatherAdapter();
         mainWeatherList.setAdapter(weatherAdapter);
 
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void receiveWeatherList(WeatherEvent event) {
+        if (event.isSuccess()) {
+            List<Forecast> forecasts = event.getForecastList();
+            Forecast todayForecast = forecasts.get(0);
+
+            Calendar calendar = GregorianCalendar.getInstance();
+            calendar.setTimeInMillis(todayForecast.getForecastDate() * 1000);
+            calendar.getTime();
+            String calendarStr = calendar.get(GregorianCalendar.DAY_OF_MONTH) + "-" + (calendar.get(GregorianCalendar.MONTH) + 1) + "-" + calendar.get(GregorianCalendar.YEAR);
+            tvDay.setText(calendarStr);
+            Glide.with(this).load(getWeatherImageUrl(todayForecast.getWeatherList().get(0).getWeatherIcon())).into(ivWeather);
+            tvWeather.setText(todayForecast.getWeatherList().get(0).getWeatherDesc());
+            tvTemperature.setText(todayForecast.getTemperature().getTempDay() + getString(R.string.degree)+"C");
+
+            weatherAdapter.setData(forecasts);
+        } else {
+
+        }
+    }
+
+    private String getWeatherImageUrl(String weatherIcon) {
+        return "http://openweathermap.org/img/w/" + weatherIcon + ".png";
     }
 
     @Override
