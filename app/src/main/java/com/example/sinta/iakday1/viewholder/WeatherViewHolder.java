@@ -14,7 +14,7 @@ import butterknife.ButterKnife;
  * Created by SINTA on 1/14/2018.
  */
 
-public class WeatherViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+public class WeatherViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     @BindView(R.id.weather_item_image)
     ImageView weatherImage;
     @BindView(R.id.weather_item_date)
@@ -25,11 +25,12 @@ public class WeatherViewHolder extends RecyclerView.ViewHolder implements View.O
     TextView weatherTemp;
 
     private final WeatherCallback callback;
-    private static final int Layout = R.layout.view_holder_weather;
+    private static final int weatherLayout = R.layout.view_holder_weather;
 
     public WeatherViewHolder(View itemView, WeatherCallback callback) {
         super(itemView);
         ButterKnife.bind(this, itemView);
+
         /*weatherImage = (ImageView) itemView.findViewById(R.id.weather_item_image);
         weatherDate = (TextView) itemView.findViewById(R.id.weather_item_date);
         weatherDesc = (TextView) itemView.findViewById(R.id.weather_item_desc);
@@ -65,6 +66,6 @@ public class WeatherViewHolder extends RecyclerView.ViewHolder implements View.O
     }
 
     public static int getWeatherLayout() {
-        return Layout;
+        return weatherLayout;
     }
 }

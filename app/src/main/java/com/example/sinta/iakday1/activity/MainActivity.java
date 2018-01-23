@@ -22,23 +22,26 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
-    @BindView(R.id.tv_day)
-    TextView tvDay;
-    @BindView(R.id.iv_weather)
-    ImageView ivWeather;
-    @BindView(R.id.tv_weather)
-    TextView tvWeather;
-    @BindView(R.id.tv_temperature)
-    TextView tvTemperature;
-    @BindView(R.id.rv_weather)
+    @BindView(R.id.main_today)
+    TextView mainToday;
+    @BindView(R.id.main_weather_image)
+    ImageView mainWeatherImage;
+    @BindView(R.id.main_weather_desc)
+    TextView mainWeatherDesc;
+    @BindView(R.id.main_weather_temp)
+    TextView mainWeatherTemp;
+    @BindView(R.id.main_weather_list)
     RecyclerView mainWeatherList;
 
     private WeatherAdapter weatherAdapter;
@@ -63,8 +66,7 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    private void initView(){
-
+    private void initView() {
         ButterKnife.bind(this);
 
         mainWeatherList.setLayoutManager(new LinearLayoutManager(this));
@@ -72,7 +74,6 @@ public class MainActivity extends AppCompatActivity {
 
         weatherAdapter = new WeatherAdapter();
         mainWeatherList.setAdapter(weatherAdapter);
-
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -81,14 +82,16 @@ public class MainActivity extends AppCompatActivity {
             List<Forecast> forecasts = event.getForecastList();
             Forecast todayForecast = forecasts.get(0);
 
-            Calendar calendar = GregorianCalendar.getInstance();
-            calendar.setTimeInMillis(todayForecast.getForecastDate() * 1000);
-            calendar.getTime();
-            String calendarStr = calendar.get(GregorianCalendar.DAY_OF_MONTH) + "-" + (calendar.get(GregorianCalendar.MONTH) + 1) + "-" + calendar.get(GregorianCalendar.YEAR);
-            tvDay.setText(calendarStr);
-            Glide.with(this).load(getWeatherImageUrl(todayForecast.getWeatherList().get(0).getWeatherIcon())).into(ivWeather);
-            tvWeather.setText(todayForecast.getWeatherList().get(0).getWeatherDesc());
-            tvTemperature.setText(todayForecast.getTemperature().getTempDay() + getString(R.string.degree)+"C");
+            Date date = new Date(todayForecast.getForecastDate() * 1000);
+            String datePattern = "EEEE, dd MMMM yyyy";
+            SimpleDateFormat outputFormat = new SimpleDateFormat(datePattern, Locale.getDefault());
+            String strDate = outputFormat.format(date);
+
+            mainToday.setText(strDate);
+            Glide.with(this).load(getWeatherImageUrl(todayForecast.getWeatherList().get(0).getWeatherIcon())).into(mainWeatherImage);
+            mainWeatherDesc.setText(todayForecast.getWeatherList().get(0).getWeatherDesc());
+            long tempDay = Math.round(todayForecast.getTemperature().getTempDay());
+            mainWeatherTemp.setText(tempDay + getString(R.string.degree));
 
             weatherAdapter.setData(forecasts);
         } else {

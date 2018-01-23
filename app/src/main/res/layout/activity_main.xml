@@ -1,28 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.sinta.iakday1.activity.MainActivity">
+    tools:context="com.alodokter.arfirman.myshunsineiak.activity.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:background="@color/colorPrimary"
-        android:padding="14dp">
+        android:orientation="vertical"
+        android:padding="16dp">
 
         <TextView
+            android:id="@+id/main_today"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:id="@+id/tv_day"
-            android:text="Sunday"
-            android:textSize="18sp"
-            android:textColor="@android:color/white"/>
+            android:layout_gravity="center_horizontal"
+            android:text="Main Today"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -36,39 +34,37 @@
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
+
                 <ImageView
+                    android:id="@+id/main_weather_image"
                     android:layout_width="72dp"
                     android:layout_height="72dp"
-                    android:id="@+id/iv_weather"
-                    android:src="@mipmap/ic_launcher"/>
+                    android:src="@mipmap/ic_launcher" />
+
                 <TextView
+                    android:id="@+id/main_weather_desc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:id="@+id/tv_weather"
-                    android:text="Moderate Rate"
-                    android:textSize="18sp"
-                    android:textColor="@android:color/white"/>
-
+                    android:layout_marginTop="8dp"
+                    android:text="@string/main_weather_desc"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp" />
             </LinearLayout>
 
             <TextView
+                android:id="@+id/main_weather_temp"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:id="@+id/tv_temperature"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="17\u00b0C"
-                android:textSize="32sp"
-                android:textColor="@android:color/white"/>
-
+                android:text="@string/main_weather_temp"
+                android:textColor="@android:color/white"
+                android:textSize="36sp" />
         </LinearLayout>
-
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_weather"
+        android:id="@+id/main_weather_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
 </LinearLayout>

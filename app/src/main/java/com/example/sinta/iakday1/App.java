@@ -19,7 +19,6 @@ public class App extends Application {
     private static App instance;
     private EventBus eventBus;
     private Gson gson;
-    private Retrofit retrofit;
 
     public App() {
         instance = this;
@@ -30,7 +29,6 @@ public class App extends Application {
         super.onCreate();
         createEventBus();
         createGson();
-        createRetrofit();
     }
 
     private void createGson() {
@@ -44,13 +42,6 @@ public class App extends Application {
                 .build();
     }
 
-    private void createRetrofit() {
-        retrofit = new Retrofit.Builder()
-                .baseUrl(WeatherApi.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-    }
-
     public Gson getGson() {
         return gson;
     }
@@ -59,12 +50,12 @@ public class App extends Application {
         return eventBus;
     }
 
-    public Retrofit getRetrofit() {
-        return retrofit;
-    }
-
     public WeatherApi getWeatherApi() {
-        return getRetrofit().create(WeatherApi.class);
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(WeatherApi.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        return retrofit.create(WeatherApi.class);
     }
 
     public static App getInstance() {
